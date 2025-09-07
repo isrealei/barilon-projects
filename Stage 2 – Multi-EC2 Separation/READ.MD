@@ -17,13 +17,13 @@ This is an extension of the e-voting application that will be deployed on EC2 in
 
 Below are the architecture diagrams in order:
 
-### 1. app2.drawio(1)_d3074988.gif
+### 1.Application Workflow
 ![Application Workflow](app-workflow.gif)
 
-### 2. new.drawio.png
+### 2.VPC-DESIGN
 ![VPC-DESIGN](vpc-design.png)
 
-### 3. app.drawio(1)_0fcf4f84.gif
+### 3. User Workflow
 ![User Workflow](user-flow.gif)
 
 
