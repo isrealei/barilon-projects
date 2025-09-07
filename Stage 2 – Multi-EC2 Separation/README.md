@@ -1,5 +1,11 @@
 
-This is an extension of the e-voting application that will be deployed on EC2 instances, with each microservice running on a separate EC2 instance.
+# Stage 2 - Multi-EC2 Separation
+
+This is an extension of the [e-voting application](https://github.com/isrealei/e-voting-applcation) that will be deployed on EC2 instances, with each microservice running on a separate EC2 instance.
+
+## Overview
+
+This stage demonstrates the deployment of a three-tier e-voting application across multiple EC2 instances, where each microservice is isolated on its own instance for better scalability and maintainability.
 
 ## Flow of Execution
 
@@ -15,16 +21,20 @@ This is an extension of the e-voting application that will be deployed on EC2 in
 
 ## Architecture Diagrams
 
-Below are the architecture diagrams in order:
+The following diagrams illustrate the application architecture and deployment strategy:
 
-### 1.Application Workflow
+### 1. Application Workflow
 ![Application Workflow](diagrams/app-workflow.gif)
 
-### 2.VPC-DESIGN
-![VPC-DESIGN](diagrams/vpc-design.png)
+### 2. VPC Design
+![VPC Design](diagrams/vpc-design.png)
 
 ### 3. User Workflow
 ![User Workflow](diagrams/user-flow.gif)
 
+## Related Resources
+
+- [Main E-Voting Application Repository](https://github.com/isrealei/e-voting-applcation)
+- [Stage 1 - Single EC2 Deployment](../Stage%201%20–%20Single-EC2%20Deployment)
 
 
