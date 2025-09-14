@@ -35,7 +35,7 @@ usermod -aG docker ubuntu
 # Clone repo (HTTPS is safer for automation)
 git clone https://github.com/isrealei/barilon-projects.git
 
-cd barilon-projects/stage-1/vote
+cd barilon-projects/Stage-1/vote
 
 # Create or overwrite .env file with REDIS_HOST
 echo "REDIS_HOST=${REDIS_HOST}" > .env
