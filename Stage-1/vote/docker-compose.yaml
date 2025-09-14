@@ -14,6 +14,8 @@ services:
       retries: 5
       start_period: 10s
     volumes:
-      - ./vote:/usr/local/app
+      - ./Stage-1/vote/:/usr/local/app
     ports: 
     - '8080:80'
+volumes:
+  vote_data:
