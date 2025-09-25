@@ -13,9 +13,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
-    volumes:
-      - ./Stage-1/vote/:/usr/local/app
+    # volumes:
+    #   - ./data:/usr/local/app
     ports: 
     - '8080:80'
-volumes:
-  vote_data:

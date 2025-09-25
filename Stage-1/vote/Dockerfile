@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 FROM base AS dev
 RUN pip install watchdog
 ENV FLASK_ENV=development
+COPY . .
 CMD ["python", "app.py"]
 
 # final defines the stage that will bundle the application for production
