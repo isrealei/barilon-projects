@@ -1,23 +1,90 @@
+# Stage 1: Deploying an Elastic and Scalable Three-Tier Web Application on AWS
 
-# Stage 2 - Multi-EC2 Separation
+This stage demonstrates the deployment of a three-tier e-voting application with elastic scaling capabilities using AWS services. The application is designed to handle varying loads automatically while maintaining high availability.
 
-This is an extension of the [e-voting application](https://github.com/isrealei/e-voting-applcation) that will be deployed on EC2 instances, with each microservice running on a separate EC2 instance.
+## Architecture Overview
 
-## Overview
+This implementation showcases a production-ready three-tier architecture:
+- **Presentation Tier**: Load-balanced web interfaces
+- **Application Tier**: Auto-scaling application servers
+- **Data Tier**: Managed database and caching services
 
-This stage demonstrates the deployment of a three-tier e-voting application across multiple EC2 instances, where each microservice is isolated on its own instance for better scalability and maintainability.
+## AWS Services Used
 
-## Flow of Execution
+| Service | Purpose |
+|---------|---------|
+| **VPC** | Network isolation and security |
+| **EC2** | Application hosting |
+| **Elastic Load Balancer (ELB)** | Traffic distribution and high availability |
+| **Auto Scaling Group (ASG)** | Automatic capacity management |
+| **Route 53** | DNS management and routing |
+| **AWS Systems Manager Parameter Store** | Secure configuration management |
+| **Amazon RDS** | Managed relational database |
+| **Amazon ElastiCache** | In-memory caching |
 
-- Create a VPC with 3 public subnets, 3 private subnets, and 3 DB subnets.
-- Create security groups for the services and assign specific IAM permissions.
-- Create 5 EC2 instances: one for each service. The result and vote services will be in public subnets, while the worker app, Postgres, and Redis will be in private subnets. These will be bootstrapped with user-data scripts.
-- Create a bastion host to access private servers running in private subnets.
-- Log into each server.
-- Clone the repository and add the Docker Compose file along with the required environment variables.
-- Create a private hosted zone in Route 53 to map service names to private IPs for Redis and Postgres.
-- Run `docker compose up`.
-- Verify by casting votes.
+## Prerequisites
+
+Before starting, ensure you have:
+- Basic Linux knowledge
+- Basic understanding of AWS services
+- Understanding of Docker and containers
+- AWS CLI configured with appropriate permissions
+
+## Deployment Steps
+
+### 1. Set up Networking
+Create a VPC with:
+- **3 private subnets** for the database tier
+- **3 private subnets** for the application tier  
+- **3 public subnets** for the web/presentation tier
+
+### 2. Configure Security
+- Create Security Groups for the various tiers and applications
+- Implement principle of least privilege access
+
+### 3. Provision Databases and Caching
+- Create an **Amazon RDS instance** for the database tier
+- Create an **Amazon ElastiCache (Redis)** cluster for caching
+
+### 4. Deploy the Application Manually (First Instance)
+- Launch one EC2 instance manually
+- Install Docker and required components
+- Deploy one of the applications and connect it to RDS/Redis to validate connectivity
+
+### 5. Automate with User Data
+- Use **EC2 User Data scripts** to automate installation and deployment for subsequent instances
+- Ensure consistent deployment across all instances
+
+### 6. Create Launch Template & Auto Scaling
+- Create a **Launch Template** for the application tier
+- Configure an **Auto Scaling Group (ASG)** and attach it to a Target Group
+- Set scaling policies based on CPU utilization and request count
+
+### 7. Set Up Load Balancing
+- Create an **Internet-facing Elastic Load Balancer**
+- Configure routing rules:
+  - `/result` → Result application
+  - `/vote` → Vote application
+
+### 8. Enable HTTPS
+- Use **AWS Certificate Manager** to issue SSL/TLS certificates for both domains (result and vote)
+- Configure HTTPS on the Load Balancer for secure communications
+
+### 9. Configure DNS
+- In **Route 53**, create records for the two domains
+- Point them to the Load Balancer DNS name using CNAME records
+
+## What You'll Learn
+
+By completing this stage, you'll understand how to:
+
+- Design and deploy a **three-tier architecture** on AWS
+- Secure and scale applications using **EC2, ASG, and ELB**
+- Automate deployments with **User Data scripts**
+- Integrate **RDS and ElastiCache** into your application
+- Configure custom domains and HTTPS using **Route 53 and Certificate Manager**
+- Build an application setup that is **elastic, scalable, and production-ready**
+
 
 ## Architecture Diagrams
 
@@ -30,11 +97,10 @@ The following diagrams illustrate the application architecture and deployment st
 ![VPC Design](diagrams/vpc-design.png)
 
 ### 3. User Workflow
-![User Workflow](diagrams/user-flow.gif)
+![User Workflow](diagrams/scalable.jpg)
 
 ## Related Resources
 
 - [Main E-Voting Application Repository](https://github.com/isrealei/e-voting-applcation)
-- [Stage 1 - Single EC2 Deployment](../Stage%201%20–%20Single-EC2%20Deployment)
 
 
