@@ -23,7 +23,7 @@ echo \
 
 # Install Docker Engine, containerd, and Compose plugin
 apt-get update -y
-apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin unzip
 
 # Enable and start Docker
 systemctl enable docker
@@ -32,30 +32,18 @@ systemctl start docker
 # Add ubuntu user to docker group
 usermod -aG docker ubuntu
 
-#install aws cli
+# Install AWS CLI v2
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-unzip awscliv2.zip
-sudo ./aws/install
-./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+unzip -o awscliv2.zip
+sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+
 
 #Pull params from SSM
-
-REDIS_HOST=$(aws ssm get-parameters --region us-east-1 --names REDIS_HOST --query Parameters[0].Value)
-REDIS_HOST=$(echo $REDIS_HOST | tr -d '"')
-
-POSTGRES_USER=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_USER --query Parameters[0].Value)
-POSTGRES_USER=$(echo $POSTGRES_USER | tr -d '"')
-
-POSTGRES_PASSWORD=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_PASSWORD --query Parameters[0].Value)
-POSTGRES_PASSWORD=$(echo $POSTGRES_PASSWORD | tr -d '"')
-
-POSTGRES_DB=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_DB --query Parameters[0].Value)
-POSTGRES_DB=$(echo $POSTGRES_DB | tr -d '"')
-
-POSTGRES_HOST=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_HOST --query Parameters[0].Value)
-POSTGRES_HOST=$(echo $POSTGRES_HOST | tr -d '"')
+REDIS_HOST=$(aws ssm get-parameters --region us-east-1 --names REDIS_HOST --with-decryption --query Parameters[0].Value --output text)
+POSTGRES_USER=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_USER --with-decryption --query Parameters[0].Value --output text)
+POSTGRES_PASSWORD=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_PASSWORD --with-decryption --query Parameters[0].Value --output text)
+POSTGRES_DB=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_DB --with-decryption --query Parameters[0].Value --output text)
+POSTGRES_HOST=$(aws ssm get-parameters --region us-east-1 --names POSTGRES_HOST --with-decryption --query Parameters[0].Value --output text)
 
 
 # Clone repo (HTTPS is safer for automation)
